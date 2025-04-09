@@ -1,0 +1,259 @@
+:root {
+    --primary-color: #4a6bff;
+    --primary-light: #e5e8ff;
+    --secondary-color: #3d5ab6;
+    --text-color: #333;
+    --text-light: #666;
+    --text-muted: #999;
+    --bg-color: #fff;
+    --border-color: #eaeaea;
+    --code-bg: #2d2d2d;
+    --code-color: #f8f8f2;
+    --warning-color: #ffad42;
+    --success-color: #42cc8c;
+    --info-color: #4a6bff;
+    --max-width: 800px;
+    --header-height: 60px;
+    --border-radius: 8px;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100%;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Noto Sans JP', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--secondary-color);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+}
+
+.shadow-img {
+    box-shadow: var(--shadow);
+}
+
+/* ヘッダー */
+header {
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--max-width);
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+#title-frame {
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+#title {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.main-nav a {
+    color: var(--text-color);
+    padding: 5px;
+    font-weight: 500;
+}
+
+.main-nav a:hover {
+    color: var(--primary-color);
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+/* メインコンテンツ */
+.wrapper {
+    max-width: var(--max-width);
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    flex: 1;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* 記事ヘッダー */
+.article-header {
+    margin-bottom: 30px;
+}
+
+.article-category {
+    margin-bottom: 10px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.article-category a {
+    color: var(--text-muted);
+}
+
+.article-category a:hover {
+    color: var(--primary-color);
+}
+
+#page-title {
+    font-size: 2rem;
+    margin: 10px 0 20px 0;
+    line-height: 1.3;
+}
+
+#user-frame {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-right: 15px;
+    border: 2px solid var(--primary-light);
+}
+
+#text {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.name {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.article-thumbnail {
+    margin-bottom: 20px;
+}
+
+.featured-image {
+    width: 100%;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+/* 目次 */
+.table-of-contents {
+    background-color: var(--primary-light);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.table-of-contents h2 {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.table-of-contents ul {
+    list-style-position: inside;
+    padding-left: 10px;
+}
+
+.table-of-contents li {
+    margin-bottom: 8px;
+}
+
+.table-of-contents a {
+    color: var(--text-color);
+}
+
+.table-of-contents a:hover {
+    color: var(--primary-color);
+}
+
+/* 記事本文 */
+.main {
+    margin-bottom: 40px;
+}
+
+.main section {
+    margin-bottom: 40px;
+}
+
+.main h2 {
+    font-size: 1.6rem;
+    padding-bottom: 8px;
+    margin: 30px 0 20px 0;
+    border-bottom: 2px solid var(--primary-light);
+}
+
+.main h3 {
+    font-size: 1.3rem;
+    margin: 25px 0 15px 0;
+}
+
+.main p {
+    margin-bottom: 15px;
+    line-height: 1.8;
+}
+
+/* リスト */
+.main ul, .main ol {
+    padding-left: 25px;
+    margin-bottom: 20px;
+}
+
+.main li {
+    margin-bottom: 10px;
+}

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="description" content="MKWiiの備忘録をまとめたブログサイト。BRLYT編集時のテキストバグ修正方法についての記事。" />
+
+    <!-- Title -->
+    <title>BRLYT編集時のテキストバグを修正する | Y!memo</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="img/favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link type="text/css" rel="stylesheet" href="../../css/style.css">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Lightbox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.css">
+
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <!-- Icon -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons%7CMaterial+Icons+Outlined">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div id="title-frame">
+                <a id="title" href="/">Y!memo</a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../../index.html">ホーム</a></li>
+                    <li><a href="../../categories/index.html">カテゴリ</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" aria-label="メニューを開く">
+                <span class="material-icons-outlined">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Wrapper -->
+    <div class="wrapper">
+        <main>
+            <article>
+                <div class="article-header">
+                    <div class="article-category">
+                        <a href="/category/mkwii">MKWii</a> / <a href="/category/modding">Modding</a>
+                    </div>
+                    <h1 id="page-title">BRLYT編集時のテキストバグを修正する</h1>
+                    <div id="user-frame">
+                        <a href="https://x.com/_0346ym" target="_blank" rel="noopener noreferrer">
+                            <img id="avatar" src="../../picture/avatar.jpg" alt="ym0346のアバター画像">
+                        </a>
+                        <div id="text">
+                            <div class="name">
+                                <a class="name" href="https://x.com/_0346ym" target="_blank" rel="noopener noreferrer">ym0346</a>
+                            </div>
+                            <time datetime="2025-04-09T20:04:40+09:00">2025年04月09日</time>
+                        </div>
+                    </div>
+                    <div class="article-thumbnail">
+                        <img src="picture/00/01.png" alt="テキストバグの例" class="featured-image">
+                    </div>
+                </div>
+
+                <div class="table-of-contents">
+                    <h2>目次</h2>
+                    <ul>
+                        <li><a href="#はじめに">はじめに</a></li>
+                        <li><a href="#この記事の対象者">この記事の対象者</a></li>
+                        <li><a href="#参考にした動画">参考にした動画</a></li>
+                        <li><a href="#必要なもの">必要なもの</a></li>
+                        <li><a href="#python環境の準備">0. Python環境の準備</a></li>
+                        <li><a href="#wuj5の準備">1. wuj5の準備</a></li>
+                        <li><a href="#brlytファイルを変換する">2. BRLYTファイルを変換する</a></li>
+                        <li><a href="#json5ファイルの編集">3. JSON5ファイルの編集</a></li>
+                        <li><a href="#json5ファイルをbrlytファイルに変換する">4. JSON5ファイルをBRLYTファイルに変換する</a></li>
+                    </ul>
+                </div>
+
+                <div class="main">
+                    <section id="はじめに">
+                        <h2>はじめに</h2>
+                        <p>これまで、<strong>バイナリ編集</strong>や<strong>パワープレー</strong>(BRLYTファイルのテキスト格納部分に文字をたくさん入力すること)で対処してきましたが、バイナリ編集は時間がかかるし、パワープレーは時間こそはかからないものの、あまり美しい修正方法ではありません。</p>
+                        <p>自分しか使わない場合はパワープレーを推奨したいところですが、共有する可能性がある場合は以下の方法で作っておくと一目置かれます。</p>
+                        <p>今回紹介する方法で、テキスト欠落バグを修正していきましょう。</p>
+                    </section>
+
+                    <section id="この記事の対象者">
+                        <h2>この記事の対象者</h2>
+                        <ul class="checklist">
+                            <li>BRLYTを編集した経験がある</li>
+                            <li>ターミナル(コマンド プロンプト等)を使用した経験がある</li>
+                            <li>より美しくファイルを整えたい</li>
+                        </ul>
+                    </section>
+
+                    <section id="参考にした動画">
+                        <h2>参考にした動画</h2>
+                        <div class="reference-box">
+                            <div class="material-icons-outlined">video_library</div>
+                            <a href="https://youtu.be/NYpFgMdSB0k?si=z4XptMionuPCXOXc" target="_blank" rel="noopener noreferrer">
+                                [Tutorial: Mario Kart Wii] How to Fix Cut-off Text Messages
+                            </a>
+                        </div>
+                        <p>こちらの動画ではbenzinを使用していますが、編集のしやすさを考慮してwuj5を使用します。</p>
+                    </section>
+
+                    <section id="必要なもの">
+                        <h2>必要なもの</h2>
+                        <ul class="requirement-list">
+                            <li>
+                                <!--<span class="material-icons-outlined">code</span>-->
+                                <div>
+                                    <a href="https://github.com/stblr/wuj5" target="_blank" rel="noopener noreferrer">wuj5 by stblr</a>
+                                    <span class="note">(Python 3, json5が必要です)</span>
+                                </div>
+                            </li>
+                            <li>
+                                <!--<span class="material-icons-outlined">text_snippet</span>-->
+                                <div>
+                                    テキストエディタ
+                                    <span class="note">(Visual Studio Code, NotePad++など)</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <p>今回は、バグ修正のために必要なツールのみを紹介しています。</p>
+                    </section>
+
+                    <section id="python環境の準備">
+                        <h2>0. Python環境の準備</h2>
+                        <div class="info-box">
+                            <p>Pythonの環境を用意したことがない方は、以下の記事を参考にして環境を用意してください。
+                            MacOSやLinuxを使用している方は、同様の記事を検索して進めてください。</p>
+                            <a href="https://prog-8.com/docs/python-env-win" target="_blank" rel="noopener noreferrer" class="button">
+                                <span class="material-icons-outlined">open_in_new</span>
+                                Pythonの開発環境を用意しよう！（Windows）[プロゲート]
+                            </a>
+                        </div>
+                    </section>
+
+                    <section id="wuj5の準備">
+                        <h2>1. wuj5の準備</h2>
+                        <ol class="step-list">
+                            <li>
+                                <p>リンクからGitHubのリポジトリにアクセスして、<strong>Code &gt; Download ZIP</strong>を押す。</p>
+                                <div class="img-frame">
+                                    <img src="picture/00/02.png" alt="GitHubからのダウンロード手順" class="shadow-img">
+                                </div>
+                            </li>
+                            <li>
+                                <p>任意の場所でZIPファイルを展開しましょう。ダウンロードフォルダではなく、デスクトップやドキュメントなどに置いておくことを推奨します。</p>
+                            </li>
+                            <li>
+                                <p>ターミナルはどこで開いても構わないのですが、今回はwuj5がある場所でターミナルを開きます。Windows11を使用している場合は以下の画像の場所で<strong>右クリック→ターミナルを開く</strong>でターミナルを開けます。</p>
+                                <div class="img-frame">
+                                    <img src="picture/00/03.png" alt="ターミナルを開く手順" class="shadow-img">
+                                </div>
+                            </li>
+                            <li>
+                                <p>使用するにはjson5というパッケージが必要なので、ターミナル上で以下を入力します。</p>
+                                <pre><code class="language-bash">pip install json5</code></pre>
+                                <p>自動でダウンロードが始まり、<strong>Successfully installed</strong>と出力されていれば導入完了です。</p>
+                            </li>
+                        </ol>
+                    </section>
+
+                    <section id="brlytファイルを変換する">
+                        <h2>2. BRLYTファイルを変換する</h2>
+                        <p>wuj5を使用すると、BRLYTファイルをJSON5形式に変換することができます。</p>
+                        
+                        <blockquote>
+                            <p>JSON (JavaScript Object Notation)は、軽量のデータ交換フォーマットです。人間にとって読み書きが容易で、マシンにとっても簡単にパースや生成を行なえる形式です。<br>
+                            参考文献『<a href="https://www.json.org/json-ja.html" target="_blank" rel="noopener noreferrer">JSON</a>』より引用</p>
+                        </blockquote>
+                        
+                        <p>JSON5はJSONを拡張したフォーマットなので、上の引用を理解すれば問題ありません。JavaScript…など書いてありますが、今回の作業ではプログラミング知識は必要ありません。</p>
+                        
+                        <div class="step-container">
+                            <p>まずは、wuj5のフォルダに編集したいBRLYTファイルをコピーします。今回は、<strong>common_w017_message.brlyt</strong>を使用してみます。</p>
+                            <div class="img-frame">
+                                <img src="picture/00/04.png" alt="BRLYTファイルをコピー" class="shadow-img">
+                                <p class="img-text">(Customフォルダは自分が追加したものです。ZIPには同梱されていません。)</p>
+                            </div>
+                            <p>先ほどと同様の手順でターミナルを開き、以下を入力します。</p>
+                            <pre><code class="language-bash">python wuj5.py decode common_w017_message.brlyt</code></pre>
+                            <p>これを実行すると、同じフォルダ内に<strong>common_w017_message.brlyt.json5</strong>というファイルが生成されます。エラーが出る場合は、実行場所が間違っていないか確認してください。</p>
+                        </div>
+                    </section>
+
+                    <section id="json5ファイルの編集">
+                        <h2>3. JSON5ファイルの編集</h2>
+                        <p>このファイルをテキストエディタで開いて、編集していきましょう。検索機能を使用して、&quot;maximum string size&quot;と&quot;string size&quot;が書かれている場所を探してください。</p>
+                        <div class="img-frame">
+                            <img src="picture/00/05.png" alt="JSON5ファイルの編集箇所" class="shadow-img">
+                        </div>
+                        
+                        <div class="important-box">
+                            <h3>重要ポイント</h3>
+                            <ul>
+                                <li>ファイルによって横に書かれている数字が異なりますが、この2つの数字を改変することでテキスト上限を変更できます</li>
+                                <li>MKWiiにおいては<strong>書かれている数字の半分が表示できる文字数</strong>になると考えてください</li>
+                                <li>数値は偶数にしておくことをおすすめします</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="formula-box">
+                            <h3>計算式</h3>
+                            <pre><code class="language-plain">(MKWiiで表示できる文字数) = ("maximum string size"の数字) ÷ 2</code></pre>
+                        </div>
+                        
+                        <p>今回においては、216ではなく、その<strong>半分の108が実際に表示できる文字数</strong>となるわけです。ここでは、250文字程度の上限であれば問題なく表示できると思うので、&quot;maximum string size&quot;と&quot;&quot;string size&quot;を500に変更します。</p>
+                        
+                        <div class="tip-box">
+                            <h3>Tips</h3>
+                            <p>BRLYTファイルによってテキスト上限が異なるため、場合に応じて変更してください。例えば、<strong>Miiの名前を表示する場所では、上限が11文字以上である必要はありません</strong>。この時、わざわざ250文字も確保しても意味がないため、&quot;maximum string size&quot;と&quot;&quot;string size&quot;は20に設定しておけば問題なく表示されるはずです。</p>
+                        </div>
+                        
+                        <p>変更したら保存してテキストエディタは閉じて構いません。</p>
+                        <div class="img-frame">
+                            <img src="picture/00/06.png" alt="編集完了したJSON5ファイル" class="shadow-img">
+                        </div>
+                    </section>
+
+                    <section id="json5ファイルをbrlytファイルに変換する">
+                        <h2>4. JSON5ファイルをBRLYTファイルに変換する</h2>
+                        <p>先ほどと同様の手順でターミナルを開き、以下を入力します。</p>
+                        <pre><code class="language-bash">python wuj5.py encode common_w017_message.brlyt.json5</code></pre>
+                        
+                        <div class="warning-box">
+                            <span class="material-icons-outlined">warning</span>
+                            <p><strong>編集前のBRLYTファイルは上書きされるので、注意してください。</strong></p>
+                        </div>
+                        
+                        <p>変換したBRLYTファイルを自分のSZSなどに移植して動作を確認します。</p>
+                        <div class="img-frame">
+                            <img src="picture/00/07.png" alt="修正後の動作確認" class="shadow-img">
+                        </div>
+                        
+                        <div class="conclusion">
+                            <p>無事にテキスト欠落バグを修正できていれば作業完了です。お疲れ様でした。</p>
+                            <div class="note-box">
+                                <h3>注意点</h3>
+                                <p><strong>修正したBRLYTファイルを編集して保存するとまた同じバグが発生します</strong>。何回も編集するときはパワープレー形式で一時的にテキスト上限を開放し、最終調整が終わった後で今回の手順で修正すると良さそうです。それではまた。</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                
+
+            </article>
+            
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+          <div class="footer-links">
+            <ul>
+              <li><a href="index.html">ホーム</a></li>
+            </ul>
+          </div>
+          <div class="footer-social">
+            <ul>
+             <li><a href="https://x.com/_0346ym">X(旧Twitter)</a></li>
+             <li><a href="https://github.com/ym0346">GitHub</a></li>
+            </ul>
+          </div>
+          <div class="footer-credits">
+            &copy; 2025 Y!memo by ym0346
+          </div>
+        </div>
+    </footer>
+
+    <script>
+        // モバイルメニュートグル
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+        });
+        
+        // シンタックスハイライト適用
+        document.addEventListener('DOMContentLoaded', (event) => {
+            Prism.highlightAll();
+        });
+    </script>
+</body>
+</html>
